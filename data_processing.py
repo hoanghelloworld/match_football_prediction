@@ -1,98 +1,118 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jun 13 12:15:43 2020
-
-@author: mhayt
-"""
-
-#-------------------------------- API-FOOTBALL --------------------------------
-
-
 import numpy as np
 import pandas as pd
 import pickle
 from sklearn import preprocessing
 import matplotlib.pyplot as plt
-  
 
-#------------------------------- DATA PROCESSING ------------------------------
-
-
-def scale_df(df, scale, unscale):
-    '''
-    This function will use the preprocessing function in sklearn to rescale each feature to haze zero mean and unit vector (mean=0, variance=1). Output is df instead of np array
-
-    Parameters
-    ----------
-    df : pandas DataFrame
-        df to manipulate/scale
-    scale : list
-        list of column indices to process/scale
-    unscale : list
-        list of column indices to remain the same
-
-    Returns
-    -------
-    Scaled df.
-
-    '''
+def calculate_rolling_averages_home_l5m(df, team, n=5):
+    # Các cột sẽ không tính toán trung bình
+    exclude_columns = ['FTR', 'HomeTeam', 'AwayTeam']
     
-    scaled_np = preprocessing.scale(df)
+    # Lọc DataFrame cho các hàng mà đội được chỉ định là đội nhà
+    team_df = df[(df['HomeTeam'] == team)]
     
-    col_list = []
-    for col in df.columns:
-        col_list.append(col)
+    # Các cột để tính toán trung bình 
+    columns_to_average = team_df.columns.difference(exclude_columns)
     
-    scaled_df = pd.DataFrame(scaled_np)
-    scaled_df.columns = col_list
+    # Tính toán trung bình cho các cột được chỉ định
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
     
-    df1 = scaled_df.iloc[:, scale]
-    df2 = df.iloc[:, unscale]
+    # Nối thông tin đội với các thống kê 
+    rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
     
-    final_df = pd.concat([df1, df2], axis=1, sort=False)
+    return rolling_stats
+def calculate_rolling_averages_away_l5m(df, team, n=5):
+    # Các cột sẽ không tính toán trung bình 
+    exclude_columns = ['FTR', 'HomeTeam', 'AwayTeam']
     
-    return final_df
-
-        
-
-def scree_plot(pca_percentages, y_max=40):
-    '''
-    Input principle component percentages list and returns scree plot
-
-    Parameters
-    ----------
-    pca_percentages : list
-        principle component percentage variation.
-
-    Returns
-    -------
-    fig : fig
-        bar plot.
-
-    '''
+    # Lọc DataFrame cho các hàng mà đội được chỉ định là đội khách
+    team_df = df[(df['AwayTeam'] == team)]
     
-    #setting up variables
-    n_components = len(pca_percentages)
+    # Các cột để tính toán trung bình 
+    columns_to_average = team_df.columns.difference(exclude_columns)
     
-    #instantiating figure
-    fig, ax = plt.subplots()
+    # Tính toán trung bình cho các cột được chỉ định
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
     
-    #plot bar component
-    ax.bar(list(range(1, n_components+1, 1)), pca_percentages, color='paleturquoise', edgecolor='darkturquoise', zorder=0)
+    # Nối thông tin đội với các thống kê 
+    rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
     
-    #annotating with percentages
-    for p in ax.patches:
-        ax.annotate(f'{round(p.get_height(), 1)}%', (p.get_x() + 0.5, p.get_height() + 0.5))
+    return rolling_stats
+def calculate_rolling_averages_home_l10m(df, team, n=10):
+    # Các cột sẽ không tính toán trung bình
+    exclude_columns = ['FTR', 'HomeTeam', 'AwayTeam']
     
-    #plot line and points of each principle component
-    ax.plot(list(range(1, n_components+1, 1)), pca_percentages, c='firebrick', zorder=1)
-    ax.scatter(list(range(1, n_components+1, 1)), pca_percentages, c='firebrick', zorder=2)
+    # Lọc DataFrame cho các hàng mà đội được chỉ định là đội nhà
+    team_df = df[(df['HomeTeam'] == team)]
     
-    #Plotting details
-    fig.suptitle('PCA Scree Plot', y=0.96, fontsize=16, fontweight='bold');
-    ax.set(xlabel='Principle Components',
-           ylabel='Percentage Variation');
-    ax.set_ylim([0,y_max])
+    # Các cột để tính toán trung bình 
+    columns_to_average = team_df.columns.difference(exclude_columns)
     
-    return fig
-
+    # Tính toán trung bình cho các cột được chỉ định
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
+    
+    # Nối thông tin đội với các thống kê 
+    rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
+    
+    return rolling_stats
+def calculate_rolling_averages_away_l10m(df, team, n=10):
+    # Các cột sẽ không tính toán trung bình 
+    exclude_columns = ['FTR', 'HomeTeam', 'AwayTeam']
+    
+    # Lọc DataFrame cho các hàng mà đội được chỉ định là đội khách
+    team_df = df[(df['AwayTeam'] == team)]
+    
+    # Các cột để tính toán trung bình 
+    columns_to_average = team_df.columns.difference(exclude_columns)
+    
+    # Tính toán trung bình cho các cột được chỉ định
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
+    
+    # Nối thông tin đội với các thống kê 
+    rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
+    
+    return rolling_stats
+def prepare_dataset_away_l5m(data, teams):
+    # Danh sách để lưu trữ dữ liệu cho tất cả các đội
+    all_data = []
+    # Lặp qua từng đội trong danh sách các đội
+    for team in teams:
+        # Tính toán các chỉ số trung bình cuộn cho đội khách
+        rolling_stats = calculate_rolling_averages_away_l5m(data, team)
+        # Thêm các chỉ số trung bình cuộn vào danh sách
+        all_data.append(rolling_stats)
+    # Kết hợp tất cả các dữ liệu lại thành một DataFrame duy nhất
+    return pd.concat(all_data)
+def prepare_dataset_home_l5m(data, teams):
+    # Danh sách để lưu trữ dữ liệu cho tất cả các đội
+    all_data = []
+    # Lặp qua từng đội trong danh sách các đội
+    for team in teams:
+        # Tính toán các chỉ số trung bình cuộn cho đội nhà
+        rolling_stats = calculate_rolling_averages_home_l5m(data, team)
+        # Thêm các chỉ số trung bình cuộn vào danh sách
+        all_data.append(rolling_stats)
+    # Kết hợp tất cả các dữ liệu lại thành một DataFrame duy nhất
+    return pd.concat(all_data)
+def prepare_dataset_away_l10m(data, teams):
+    # Danh sách để lưu trữ dữ liệu cho tất cả các đội
+    all_data = []
+    # Lặp qua từng đội trong danh sách các đội
+    for team in teams:
+        # Tính toán các chỉ số trung bình cuộn cho đội khách
+        rolling_stats = calculate_rolling_averages_away_l10m(data, team)
+        # Thêm các chỉ số trung bình cuộn vào danh sách
+        all_data.append(rolling_stats)
+    # Kết hợp tất cả các dữ liệu lại thành một DataFrame duy nhất
+    return pd.concat(all_data)
+def prepare_dataset_home_l10m(data, teams):
+    # Danh sách để lưu trữ dữ liệu cho tất cả các đội
+    all_data = []
+    # Lặp qua từng đội trong danh sách các đội
+    for team in teams:
+        # Tính toán các chỉ số trung bình cuộn cho đội nhà
+        rolling_stats = calculate_rolling_averages_home_l10m(data, team)
+        # Thêm các chỉ số trung bình cuộn vào danh sách
+        all_data.append(rolling_stats)
+    # Kết hợp tất cả các dữ liệu lại thành một DataFrame duy nhất
+    return pd.concat(all_data)
