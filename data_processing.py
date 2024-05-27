@@ -116,9 +116,8 @@ def prepare_dataset_home_l10m(data, teams):
         all_data.append(rolling_stats)
     # Kết hợp tất cả các dữ liệu lại thành một DataFrame duy nhất
     return pd.concat(all_data)
-import pandas as pd
 
-def dudoan_away_1_l5m(df, team, n=5):
+def dudoan_away_1_l5m(df, team):
     # Các cột sẽ không tính toán trung bình 
     exclude_columns = ['FTR', 'HomeTeam', 'AwayTeam']
     
@@ -167,7 +166,7 @@ def dudoan_home_1_l5m(df, team):
     
     # Tính toán trung bình cho các cột được chỉ định
     # Tính trung bình các cột với 5 hàng cuối cùng
-    last_rolling_stats = team_df[columns_to_average].tail(5).mean(axis=0)
+    last_rolling_stats = team_df[columns_to_average].tail(5).mean(axis=0).round(6)
     return last_rolling_stats
 
 def dudoan_home_2_l5m(data, teams):
@@ -192,7 +191,7 @@ def dudoan_home_2_l5m(data, teams):
     final_df = final_df[cols]
     
     return final_df
-def dudoan_away_1_l10m(df, team, n=10):
+def dudoan_away_1_l10m(df, team):
     # Các cột sẽ không tính toán trung bình 
     exclude_columns = ['FTR', 'HomeTeam', 'AwayTeam']
     
