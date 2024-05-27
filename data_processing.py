@@ -15,7 +15,7 @@ def calculate_rolling_averages_home_l5m(df, team, n=5):
     columns_to_average = team_df.columns.difference(exclude_columns)
     
     # Tính toán trung bình cho các cột được chỉ định
-    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1).round(6)
     
     # Nối thông tin đội với các thống kê 
     rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
@@ -32,7 +32,7 @@ def calculate_rolling_averages_away_l5m(df, team, n=5):
     columns_to_average = team_df.columns.difference(exclude_columns)
     
     # Tính toán trung bình cho các cột được chỉ định
-    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1).round(6)
     
     # Nối thông tin đội với các thống kê 
     rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
@@ -49,7 +49,7 @@ def calculate_rolling_averages_home_l10m(df, team, n=10):
     columns_to_average = team_df.columns.difference(exclude_columns)
     
     # Tính toán trung bình cho các cột được chỉ định
-    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1).round(6)
     
     # Nối thông tin đội với các thống kê 
     rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
@@ -66,7 +66,7 @@ def calculate_rolling_averages_away_l10m(df, team, n=10):
     columns_to_average = team_df.columns.difference(exclude_columns)
     
     # Tính toán trung bình cho các cột được chỉ định
-    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1)
+    rolling_stats = team_df[columns_to_average].rolling(window=n).mean().shift(1).round(6)
     
     # Nối thông tin đội với các thống kê 
     rolling_stats = pd.concat([team_df[exclude_columns], rolling_stats], axis=1)
@@ -129,7 +129,7 @@ def dudoan_away_1_l5m(df, team):
     
     # Tính toán trung bình cho các cột được chỉ định
     # Tính trung bình các cột với 5 hàng cuối cùng
-    last_rolling_stats = team_df[columns_to_average].tail(5).mean(axis=0)
+    last_rolling_stats = team_df[columns_to_average].tail(5).mean(axis=0).round(6)
     return last_rolling_stats
 
 def dudoan_away_2_l5m(data, teams):
@@ -203,7 +203,7 @@ def dudoan_away_1_l10m(df, team):
     
     # Tính toán trung bình cho các cột được chỉ định
     # Tính trung bình các cột với 5 hàng cuối cùng
-    last_rolling_stats = team_df[columns_to_average].tail(10).mean(axis=0)
+    last_rolling_stats = team_df[columns_to_average].tail(10).mean(axis=0).round(6)
     return last_rolling_stats
 
 def dudoan_away_2_l10m(data, teams):
@@ -240,7 +240,7 @@ def dudoan_home_1_l10m(df, team):
     
     # Tính toán trung bình cho các cột được chỉ định
     # Tính trung bình các cột với 5 hàng cuối cùng
-    last_rolling_stats = team_df[columns_to_average].tail(10).mean(axis=0)
+    last_rolling_stats = team_df[columns_to_average].tail(10).mean(axis=0).round(6)
     return last_rolling_stats
 
 def dudoan_home_2_l10m(data, teams):
