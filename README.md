@@ -1,4 +1,5 @@
-# match_football_prediction
+# Match Football Prediction IAI
+library requirement: pip install flask
 /dulieuhuanluyen: chứa dữ liệu để huấn luyện mô hình dự đoán trước trận
  <br>
 /dulieududoan: chứa dữ liệu dự đoán trước trận
