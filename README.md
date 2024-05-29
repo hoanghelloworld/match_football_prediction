@@ -1,16 +1,17 @@
 # Match Football Prediction IAI
 library requirement: pip install flask
-/dulieuhuanluyen: chứa dữ liệu để huấn luyện mô hình dự đoán trước trận
  <br>
-/dulieududoan: chứa dữ liệu dự đoán trước trận
+**/dulieuhuanluyen: chứa dữ liệu để huấn luyện mô hình dự đoán trước trận**
  <br>
-/utils: xây dựng thư viện xử lí dữ liệu
+**/dulieududoan: chứa dữ liệu dự đoán trước trận**
  <br>
-/train_models/all_models.ipynb: file train mô hình trước trận
+**/utils: xây dựng thư viện xử lí dữ liệu**
  <br>
-/process_data_to_predict_new_matches.ipynb: file xử lí dữ liệu để dự đoán trận mới sau khi có file train
+**/train_models/all_models.ipynb: file train mô hình trước trận**
  <br>
-/dudoan.ipynb: dự đoán trước trận
+**/process_data_to_predict_new_matches.ipynb: file xử lí dữ liệu để dự đoán trận mới sau khi có file train**
  <br>
-/dangdienra : <br>-crawl dữ liệu, xử lí dữ liệu, xây dựng mô hình ,web app cho dự đoán trận đấu đang diễn ra train thế giới <br>
-             - run app.py để ra giao diện
+**/dudoan.ipynb: dự đoán trước trận**
+ <br>
+**/dangdienra : <br>-crawl dữ liệu, xử lí dữ liệu, xây dựng mô hình ,web app cho dự đoán trận đấu đang diễn ra train thế giới <br>
+             - run app.py để ra giao diện**
