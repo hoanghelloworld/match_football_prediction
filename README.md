@@ -11,5 +11,5 @@
  <br>
 /dudoan.ipynb: dự đoán trước trận
  <br>
-/dangdienra :-crawl dữ liệu, xử lí dữ liệu, xây dựng mô hình ,web app cho dự đoán trận đấu đang diễn ra train thế giới <br>
+/dangdienra : <br>-crawl dữ liệu, xử lí dữ liệu, xây dựng mô hình ,web app cho dự đoán trận đấu đang diễn ra train thế giới <br>
              - run app.py để ra giao diện
